@@ -1,0 +1,33 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jan 16, 2020, 8:34:30 PM
+    Author     : xecar
+*/
+.button {  
+    -fx-border-color: #75BF6D;
+    -fx-background-radius: 0;
+    -fx-background-color: #75BF6D;
+    -fx-font-family: "Lucida Sans", Helvetica, Arial, sans-serif;
+    -fx-font-size: 15pt;
+    -fx-text-fill: #010800;
+}
+
+.label {
+    -fx-font-family: "Lucida Sans", Helvetica, Arial, sans-serif;
+    -fx-font-size: 24pt;
+    -fx-text-fill: #111111;
+}
+
+#hbox{
+    -fx-border-color: #3CA332;
+    -fx-background-color: #3CA332;
+}
+
+#pane{
+    -fx-border-color: #C4FCBF;
+    -fx-background-color: #C4FCBF;
+}
