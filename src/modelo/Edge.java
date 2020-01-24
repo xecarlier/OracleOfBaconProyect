@@ -62,7 +62,7 @@ public class Edge<E> {
     
     @Override
     public boolean equals(Object obj) {
-        if (obj == null||!(obj instanceof Vertex)) {
+        if (obj == null||!(obj instanceof Edge)) {
             return false;
         }
         Edge<E> edg = (Edge<E>) obj;

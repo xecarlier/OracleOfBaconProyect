@@ -29,7 +29,7 @@ public class BNRun extends Application {
     
     @Override
     public void start(Stage primaryStage) throws Exception {  
-        Scene sc = new Scene(new BNScene(primaryStage).getRoot(),700,700);
+        Scene sc = new Scene(new BNScene(primaryStage).getRoot(),1500,1000);
         String fontSheet = fileToStylesheetString( new File ("src/css/estilos.css") );
 
         if ( fontSheet != null ) {

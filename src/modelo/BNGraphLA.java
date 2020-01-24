@@ -173,7 +173,7 @@ public class BNGraphLA<E> {
         cadena2.append(", E:{(");
         for(Vertex<E> v: vertexes){
             for(Edge<E> e: v.getEdges()){
-                cadena2.append(e.getOrigen().getData()).append(",").append(e.getOrigen().getData()).append("), (");
+                cadena2.append(e.getOrigen().getData()).append(",").append(e.getDestino().getData()).append("), (");
             }
         }
         cd += cadena2.substring(0, cadena2.length() -3) + "}";
@@ -300,7 +300,7 @@ public class BNGraphLA<E> {
         Vertex<E> v = vd;
         Stack<E> st = new Stack<>();
         while(v!=null){
-            l.add(v.getData());
+            st.push(v.getData());
             v = v.getAntecesor();
         }
         while(!st.isEmpty()){
