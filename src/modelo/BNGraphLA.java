@@ -5,6 +5,7 @@
  */
 package modelo;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.Stack;
  *
  * @author xecar
  */
-public class BNGraphLA<E> {
+public class BNGraphLA<E> implements Serializable{
     private List<Vertex<E>> vertexes;
     private boolean directed;
     
@@ -38,30 +39,6 @@ public class BNGraphLA<E> {
             return false;
         }
         return vertexes.add(v);
-    }
-    
-    public boolean addEdge(E origen, E destino, int peso){
-        if(origen==null || destino==null){
-            return false;
-        }
-        Vertex<E> og, des;
-        og = searchVertex(origen);
-        des = searchVertex(destino);
-        if(og==null||des==null){
-            return false;
-        }else{
-            Edge<E> edge = new Edge<>(og, des, peso);
-            if(og.getEdges().contains(edge)){
-                return false;
-            }
-            og.getEdges().add(edge);
-            if(!directed){
-                edge = new Edge<>(des, og, peso);
-                des.getEdges().add(edge);
-            }
-            return true;
-        }
-        
     }
     
     public boolean addEdge(E origen, E destino, int peso, String pelicula){
@@ -173,7 +150,7 @@ public class BNGraphLA<E> {
         cadena2.append(", E:{(");
         for(Vertex<E> v: vertexes){
             for(Edge<E> e: v.getEdges()){
-                cadena2.append(e.getOrigen().getData()).append(",").append(e.getDestino().getData()).append("), (");
+                cadena2.append(e.getOrigen().getData()).append(",").append(e.getDestino().getData()).append(",").append(e.getPelicula()).append("), (");
             }
         }
         cd += cadena2.substring(0, cadena2.length() -3) + "}";

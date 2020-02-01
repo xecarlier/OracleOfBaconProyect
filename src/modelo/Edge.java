@@ -5,11 +5,13 @@
  */
 package modelo;
 
+import java.io.Serializable;
+
 /**
  *
  * @author xecar
  */
-public class Edge<E> {
+public class Edge<E> implements Serializable{
     private Vertex<E> origen;
     private Vertex<E> destino;
     private int peso;
