@@ -21,6 +21,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -66,13 +67,19 @@ public class BNScene {
         paneD.setId("pane");
         paneD.setPrefWidth(450);
         HBox paneBox = new HBox();
+        VBox pane1 = new VBox();
+        VBox pane2 = new VBox();
+        VBox pane3 = new VBox();
         scroll = new ScrollPane();
         scroll3 = new ScrollPane();
         scroll2 = new ScrollPane();
         scroll.setContent(paneI);
         scroll2.setContent(pane);
         scroll3.setContent(paneD);
-        paneBox.getChildren().addAll(scroll, scroll2, scroll3);
+        pane1.getChildren().add(scroll);
+        pane2.getChildren().add(scroll2);
+        pane3.getChildren().add(scroll3);
+        paneBox.getChildren().addAll(pane1, pane2, pane3);
         HBox.setHgrow(scroll, Priority.ALWAYS);
         HBox.setHgrow(scroll2, Priority.ALWAYS);
         HBox.setHgrow(scroll3, Priority.ALWAYS);
@@ -91,6 +98,7 @@ public class BNScene {
         panelInferior.getChildren().addAll(origin, new Label("to"), destiny, findb);
         panelInferior.setSpacing(10);
         findb.setOnAction(e->{
+            
             if(!paneI.getChildren().isEmpty()){
                 paneI.getChildren().remove(0, paneI.getChildren().size());
             }
@@ -101,24 +109,39 @@ public class BNScene {
                 actoresNotFound();
             }
             else{
+                long inicio= System.currentTimeMillis();
                 grafo.BFSCaminoMasCorto(origen);
                 dibujarActor(grafo.rutaActores(destino), paneI);
                 dibujarPelicula(grafo.rutaPeliculas(destino), paneI);
                 if(!pane.getChildren().isEmpty()){
                     pane.getChildren().remove(0, pane.getChildren().size());
                 }
+                long finBFS = System.currentTimeMillis();
+                long timeBFS = finBFS-inicio;
+                Label l1 = new Label("Tiempo BFS:" + timeBFS);
+                pane1.getChildren().add(l1);
 
                 //DFS
+                inicio= System.currentTimeMillis();
                 grafo.DFSCamino(origen);
                 dibujarActor(grafo.rutaActores(destino), pane);
                 dibujarPelicula(grafo.rutaPeliculas(destino), pane);
                 if(!paneD.getChildren().isEmpty()){
                     paneD.getChildren().remove(0, paneD.getChildren().size());
                 }
-
+                long finDFS = System.currentTimeMillis();
+                long timeDFS = finDFS-inicio;
+                Label l2 = new Label("Tiempo DFS:" + timeDFS);
+                pane2.getChildren().add(l2);
+                
                 //Dijkstra
+                inicio= System.currentTimeMillis();
                 dibujarActor(grafo.dijkstraActores(origen, destino), paneD);
                 dibujarPelicula(grafo.rutaPeliculas(destino), paneD);
+                long finDij = System.currentTimeMillis();
+                long timeDIJ = finDij-inicio;
+                Label l3 = new Label("Tiempo DIJKSTRA:" + timeDIJ);
+                pane3.getChildren().add(l3);
             }
         });
     }
@@ -140,7 +163,6 @@ public class BNScene {
         StackPane sp = new StackPane();
         t.setText(n);
         sp.relocate(xPos, yPos/tamaño);
-        System.out.println(yPos/tamaño);
         sp.getChildren().addAll(r1,t);
         pane.getChildren().add(sp);
         if(!vList.isEmpty()){
@@ -150,14 +172,12 @@ public class BNScene {
     
     private void dibujarActor(Stack<String> vList, double y, Pane pane){
         String n = vList.pop();
-        System.out.println(n);
         Text t = new Text();
         Rectangle r1 = new Rectangle(200,50); 
         r1.setFill(Color.LIMEGREEN);
         StackPane sp = new StackPane();
         t.setText(n);
         sp.relocate(xPos, y);
-        System.out.println(y);
         sp.getChildren().addAll(r1,t);
         pane.getChildren().add(sp);
         if(!vList.isEmpty()){
@@ -166,7 +186,6 @@ public class BNScene {
     }
     
     private void dibujarPelicula(Stack<String> pList, Pane pane){
-        System.out.println(pList);
         String n = pList.pop();
         Text t = new Text();
         Rectangle r1 = new Rectangle(200,50); 
@@ -174,7 +193,6 @@ public class BNScene {
         StackPane sp = new StackPane();
         t.setText(n);
         sp.relocate(xPos, yPos/tamaño + 80);
-        System.out.println(yPos/tamaño + 80);
         sp.getChildren().addAll(r1,t);
         pane.getChildren().add(sp);
         if(!pList.isEmpty()){
@@ -192,7 +210,6 @@ public class BNScene {
         StackPane sp = new StackPane();
         t.setText(n);
         sp.relocate(xPos, y);
-        System.out.println(y);
         sp.getChildren().addAll(r1,t);
         pane.getChildren().add(sp);
         if(!pList.isEmpty()){
@@ -216,7 +233,6 @@ public class BNScene {
         sp.setLayoutX(x+85);
         sp.setLayoutY(d);
         sp.relocate(x+85, d);
-        System.out.println(d);
         sp.getChildren().addAll(iv,t);
         pane.getChildren().add(sp);
     }
