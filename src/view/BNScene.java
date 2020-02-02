@@ -6,13 +6,15 @@
 package view;
 
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
+import javafx.geometry.Pos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -22,11 +24,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import modelo.Archivo;
 import modelo.BNGraphLA;
 import modelo.Vertex;
 
@@ -46,34 +47,37 @@ public class BNScene {
     private StackPane nodo;
     private GraphicsContext gc;
     private int tamaño;
+    private ScrollPane scroll, scroll2,scroll3;
     private Pane paneI;
     private Pane pane;
     private Pane paneD;
     
     public BNScene(Stage stage){
-        grafo = new BNGraphLA<>(false);
-        grafo.addVertex("a");
-        grafo.addVertex("b");
-        grafo.addVertex("c");
-        grafo.addEdge("a", "b", 1, "cosa");
-        grafo.addEdge("b", "c", 1, "otro");
-        //cargarGrafo();
+        Archivo.cargarGraph();
+        grafo = Archivo.getGraph();
         root = new BorderPane();
         nodo = new StackPane();
         pane = new Pane();
         pane.setId("pane");
-        pane.prefWidth(500);
+        
+        pane.setPrefWidth(450);
         paneI = new Pane();
         paneI.setId("pane");
-        paneI.prefWidth(500);
+        paneI.setPrefWidth(450);
         paneD = new Pane();
         paneD.setId("pane");
-        paneD.prefWidth(500);
+        paneD.setPrefWidth(450);
         HBox paneBox = new HBox();
-        paneBox.getChildren().addAll(paneI, pane, paneD);
-        HBox.setHgrow(paneI, Priority.ALWAYS);
-        HBox.setHgrow(pane, Priority.ALWAYS);
-        HBox.setHgrow(paneD, Priority.ALWAYS);
+        scroll = new ScrollPane();
+        scroll3 = new ScrollPane();
+        scroll2 = new ScrollPane();
+        scroll.setContent(paneI);
+        scroll2.setContent(pane);
+        scroll3.setContent(paneD);
+        paneBox.getChildren().addAll(scroll, scroll2, scroll3);
+        HBox.setHgrow(scroll, Priority.ALWAYS);
+        HBox.setHgrow(scroll2, Priority.ALWAYS);
+        HBox.setHgrow(scroll3, Priority.ALWAYS);
         panelInferior = new HBox();
         panelInferior.setId("hbox");
         findb = new Button("Find");
@@ -92,22 +96,42 @@ public class BNScene {
             if(!paneI.getChildren().isEmpty()){
                 paneI.getChildren().remove(0, paneI.getChildren().size());
             }
-            grafo.BFSCaminoMasCorto(origin.getText());
-            dibujarActor(grafo.rutaActores(destiny.getText()), paneI);
-            dibujarPelicula(grafo.rutaPeliculas(destiny.getText()), paneI);
-            if(!pane.getChildren().isEmpty()){
-                pane.getChildren().remove(0, pane.getChildren().size());
+            
+            Vertex<String> origen = grafo.searchOrigen(origin.getText());
+            Vertex<String> destino = grafo.searchDestino(destiny.getText());
+            if(origen == null || destino == null){
+                actoresNotFound();
             }
-            grafo.BFSCaminoMasCorto(origin.getText());
-            dibujarActor(grafo.rutaActores(destiny.getText()), pane);
-            dibujarPelicula(grafo.rutaPeliculas(destiny.getText()), pane);
-            if(!paneD.getChildren().isEmpty()){
-                paneD.getChildren().remove(0, paneD.getChildren().size());
+            else{
+                grafo.BFSCaminoMasCorto(origen);
+                dibujarActor(grafo.rutaActores(destino), paneI);
+                dibujarPelicula(grafo.rutaPeliculas(destino), paneI);
+                if(!pane.getChildren().isEmpty()){
+                    pane.getChildren().remove(0, pane.getChildren().size());
+                }
+
+                //DFS
+                grafo.BFSCaminoMasCorto(origen);
+                dibujarActor(grafo.rutaActores(destino), pane);
+                dibujarPelicula(grafo.rutaPeliculas(destino), pane);
+                if(!paneD.getChildren().isEmpty()){
+                    paneD.getChildren().remove(0, paneD.getChildren().size());
+                }
+
+                //Dijkstra
+                //grafo.Dijkstra(origen);
+                //List<Stack<String>> list = grafo.caminoDijkstra(destino, origen);
+                dibujarActor(grafo.dijkstraActores(origen, destino), paneD);
+                dibujarPelicula(grafo.rutaPeliculas(destino), paneD);
             }
-            grafo.BFSCaminoMasCorto(origin.getText());
-            dibujarActor(grafo.rutaActores(destiny.getText()), paneD);
-            dibujarPelicula(grafo.rutaPeliculas(destiny.getText()), paneD);
         });
+    }
+    
+    private void actoresNotFound(){
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setContentText("No se encontró el actor que ingresó");
+        alert.showAndWait();
     }
     
     private void dibujarActor(Stack<String> vList, Pane pane){
