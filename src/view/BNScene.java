@@ -149,9 +149,10 @@ public class BNScene {
                 
                 //Dijkstra
                 inicio= System.currentTimeMillis();
-                peliculas3 = grafo.rutaPeliculas(destino).size();
+                //peliculas3 = grafo.rutaPeliculas(destino).size();
                 dibujarActor(grafo.dijkstraActores(origen, destino), paneD);
                 dibujarPelicula(grafo.rutaPeliculas(destino), paneD);
+                peliculas3 = grafo.rutaPeliculas(destino).size();
                 long finDij = System.currentTimeMillis();
                 long timeDIJ = finDij-inicio;
                 Label l3 = new Label("Tiempo DIJKSTRA:" + timeDIJ);
