@@ -50,6 +50,9 @@ public class BNScene {
     private Pane paneI;
     private Pane pane;
     private Pane paneD;
+    private int peliculas;
+    private int peliculas2;
+    private int peliculas3;
     
     public BNScene(Stage stage){
         Archivo.cargarGraph();
@@ -59,6 +62,9 @@ public class BNScene {
         pane = new Pane();
         pane.setId("pane");
         
+        peliculas = 0;
+        peliculas2 = 0;
+        peliculas3 = 0;
         pane.setPrefWidth(450);
         paneI = new Pane();
         paneI.setId("pane");
@@ -112,6 +118,7 @@ public class BNScene {
             else{
                 long inicio= System.currentTimeMillis();
                 grafo.BFSCaminoMasCorto(origen);
+                peliculas = grafo.rutaPeliculas(destino).size();
                 dibujarActor(grafo.rutaActores(destino), paneI);
                 dibujarPelicula(grafo.rutaPeliculas(destino), paneI);
                 if(!pane.getChildren().isEmpty()){
@@ -121,11 +128,13 @@ public class BNScene {
                 long finBFS = System.currentTimeMillis();
                 long timeBFS = finBFS-inicio;
                 Label l1 = new Label("Tiempo BFS:" + timeBFS);
-                pane1.getChildren().add(l1);
+                Label n = new Label("Numero de peliculas: " + peliculas);
+                pane1.getChildren().addAll(l1,n);
 
                 //DFS
                 inicio= System.currentTimeMillis();
                 grafo.DFSCamino(origen);
+                peliculas2 = grafo.rutaPeliculas(destino).size();
                 dibujarActor(grafo.rutaActores(destino), pane);
                 dibujarPelicula(grafo.rutaPeliculas(destino), pane);
                 if(!paneD.getChildren().isEmpty()){
@@ -135,16 +144,19 @@ public class BNScene {
                 long finDFS = System.currentTimeMillis();
                 long timeDFS = finDFS-inicio;
                 Label l2 = new Label("Tiempo DFS:" + timeDFS);
-                pane2.getChildren().add(l2);
+                Label n2 = new Label("Numero de peliculas: " + peliculas2);
+                pane2.getChildren().addAll(l2,n2);
                 
                 //Dijkstra
                 inicio= System.currentTimeMillis();
+                peliculas3 = grafo.rutaPeliculas(destino).size();
                 dibujarActor(grafo.dijkstraActores(origen, destino), paneD);
                 dibujarPelicula(grafo.rutaPeliculas(destino), paneD);
                 long finDij = System.currentTimeMillis();
                 long timeDIJ = finDij-inicio;
                 Label l3 = new Label("Tiempo DIJKSTRA:" + timeDIJ);
-                pane3.getChildren().add(l3);
+                Label n3 = new Label("Numero de peliculas: " + peliculas3);
+                pane3.getChildren().addAll(l3,n3);
             }
         });
     }
@@ -189,6 +201,7 @@ public class BNScene {
     }
     
     private void dibujarPelicula(Stack<String> pList, Pane pane){
+        //peliculas = pList.size();
         String n = pList.pop();
         Text t = new Text();
         Rectangle r1 = new Rectangle(250,50); 
@@ -200,6 +213,7 @@ public class BNScene {
         pane.getChildren().add(sp);
         if(!pList.isEmpty()){
             dibujarPelicula(pList, yPos/tamaño + 240, pane);
+            //peliculas++;
         }
         dibujarFlecha("was in", (yPos/tamaño) + 50, xPos - 5, pane);
         dibujarFlecha("with", yPos/tamaño + 130, xPos, pane);
