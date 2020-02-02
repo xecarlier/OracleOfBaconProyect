@@ -101,6 +101,7 @@ public class BNScene {
             
             if(!paneI.getChildren().isEmpty()){
                 paneI.getChildren().remove(0, paneI.getChildren().size());
+                pane1.getChildren().remove(1);
             }
             
             Vertex<String> origen = grafo.searchOrigen(origin.getText());
@@ -115,6 +116,7 @@ public class BNScene {
                 dibujarPelicula(grafo.rutaPeliculas(destino), paneI);
                 if(!pane.getChildren().isEmpty()){
                     pane.getChildren().remove(0, pane.getChildren().size());
+                    pane2.getChildren().remove(1);
                 }
                 long finBFS = System.currentTimeMillis();
                 long timeBFS = finBFS-inicio;
@@ -128,6 +130,7 @@ public class BNScene {
                 dibujarPelicula(grafo.rutaPeliculas(destino), pane);
                 if(!paneD.getChildren().isEmpty()){
                     paneD.getChildren().remove(0, paneD.getChildren().size());
+                    pane3.getChildren().remove(1);
                 }
                 long finDFS = System.currentTimeMillis();
                 long timeDFS = finDFS-inicio;
@@ -188,11 +191,11 @@ public class BNScene {
     private void dibujarPelicula(Stack<String> pList, Pane pane){
         String n = pList.pop();
         Text t = new Text();
-        Rectangle r1 = new Rectangle(200,50); 
+        Rectangle r1 = new Rectangle(250,50); 
         r1.setFill(Color.LIGHTBLUE);
         StackPane sp = new StackPane();
         t.setText(n);
-        sp.relocate(xPos, yPos/tamaño + 80);
+        sp.relocate(xPos - 25, yPos/tamaño + 80);
         sp.getChildren().addAll(r1,t);
         pane.getChildren().add(sp);
         if(!pList.isEmpty()){
@@ -205,11 +208,11 @@ public class BNScene {
     private void dibujarPelicula(Stack<String> pList, double y, Pane pane){
         String n = pList.pop();
         Text t = new Text();
-        Rectangle r1 = new Rectangle(200,50); 
+        Rectangle r1 = new Rectangle(250,50); 
         r1.setFill(Color.LIGHTBLUE);
         StackPane sp = new StackPane();
         t.setText(n);
-        sp.relocate(xPos, y);
+        sp.relocate(xPos - 25, y);
         sp.getChildren().addAll(r1,t);
         pane.getChildren().add(sp);
         if(!pList.isEmpty()){
