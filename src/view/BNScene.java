@@ -111,7 +111,7 @@ public class BNScene {
                 }
 
                 //DFS
-                grafo.BFSCaminoMasCorto(origen);
+                grafo.DFSCamino(origen);
                 dibujarActor(grafo.rutaActores(destino), pane);
                 dibujarPelicula(grafo.rutaPeliculas(destino), pane);
                 if(!paneD.getChildren().isEmpty()){
@@ -119,8 +119,6 @@ public class BNScene {
                 }
 
                 //Dijkstra
-                //grafo.Dijkstra(origen);
-                //List<Stack<String>> list = grafo.caminoDijkstra(destino, origen);
                 dibujarActor(grafo.dijkstraActores(origen, destino), paneD);
                 dibujarPelicula(grafo.rutaPeliculas(destino), paneD);
             }

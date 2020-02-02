@@ -332,9 +332,26 @@ public class BNGraphLA<E> implements Serializable{
         }
     }
     
-    public void DFSCaminoMasCorto(Vertex<E> origen){
+    public void DFSCamino(Vertex<E> origen){
         cleanVertexD();
         
+        if(origen != null){
+            Stack<Vertex<E>> q = new Stack<>();
+            origen.setVisited(true);
+            q.push(origen);
+            Vertex<E> v = origen;
+            while(!q.isEmpty()){
+                v = q.pop();
+                //l.add(v.getData());
+                for(Edge<E> e :v.getEdges()){
+                    if(!e.getDestino().getVisited()){
+                        e.getDestino().setVisited(true);
+                        e.getDestino().setAntecesor(v);
+                        q.push(e.getDestino());
+                    }
+                }
+            }
+        }
 //        List<E> l = new LinkedList<>();
 //        if(data==null){
 //            return l;
