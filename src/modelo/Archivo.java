@@ -21,25 +21,14 @@ import recursos.Constantes;
  */
 public class Archivo{
     private static BNGraphLA graph = new BNGraphLA(false);
+    
+    private Archivo(){
+        
+    }
 
     public static BNGraphLA getGraph() {
         return graph;
     }
-    
-    /*
-    Stack overflow ;;
-    */
-    public static void guardarArbol(){
-        try (ObjectOutputStream salida = new ObjectOutputStream(new FileOutputStream(Constantes.PATH_FICH))) {
-            salida.writeObject(graph);
-           
-        } catch (FileNotFoundException e) {
-            Logger.getLogger(Archivo.class.getName()).log(Level.SEVERE, null, e);
-        } catch (IOException e) {
-            Logger.getLogger(Archivo.class.getName()).log(Level.SEVERE, null, e);
-        } 
-    }
-    
     
     private static void asignarActores(String[] actores, String pelicula){
         for(String actor:actores){
@@ -67,8 +56,6 @@ public class Archivo{
                 }
             }
         
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Archivo.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(Archivo.class.getName()).log(Level.SEVERE, null, ex);
         }

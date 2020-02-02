@@ -5,7 +5,6 @@
  */
 package modelo;
 
-import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,7 +16,7 @@ import java.util.Stack;
  *
  * @author xecar
  */
-public class BNGraphLA<E> implements Serializable{
+public class BNGraphLA<E>{
     private List<Vertex<E>> vertexes;
     private boolean directed;
     private Vertex<E> origen = null;
@@ -274,13 +273,12 @@ public class BNGraphLA<E> implements Serializable{
             origen.setVisited(true);
             for(Edge<E> e: origen.getEdges()){
                 Vertex<E> v = e.getDestino();
-                if(!v.getVisited()){
-                    if(v.getDistancia()>(origen.getDistancia()+e.getPeso())){
-                        v.setDistancia(origen.getDistancia()+e.getPeso());
-                        v.setAntecesor(origen);
-                        pq.offer(v);
-                    }
+                if(!v.getVisited() && v.getDistancia()>(origen.getDistancia()+e.getPeso())){
+                    v.setDistancia(origen.getDistancia()+e.getPeso());
+                    v.setAntecesor(origen);
+                    pq.offer(v);
                 }
+                
             }
         }
     }
@@ -288,14 +286,6 @@ public class BNGraphLA<E> implements Serializable{
     
     public Stack<E> dijkstraActores(Vertex<E> vo, Vertex<E> vd){
         Stack<E> st = new Stack<>();
-//        if(origen==null||destino==null){
-//            return l;
-//        }
-//        Vertex<E> vo = searchVertex(origen);
-//        Vertex<E> vd = searchVertex(destino);
-//        if(vo==null||vd==null){
-//            return l;
-//        }
         Dijkstra(vo);
         Vertex<E> v = vd;
         
@@ -311,7 +301,6 @@ public class BNGraphLA<E> implements Serializable{
     
     public void BFSCaminoMasCorto(Vertex<E> origen){
         cleanVertexD();
-        //Vertex<E> origen = searchVertex(og);
         if(origen!=null){
             origen.setDistancia(0);
             Queue<Vertex<E>> q = new LinkedList<>();
@@ -342,7 +331,6 @@ public class BNGraphLA<E> implements Serializable{
             Vertex<E> v = origen;
             while(!q.isEmpty()){
                 v = q.pop();
-                //l.add(v.getData());
                 for(Edge<E> e :v.getEdges()){
                     if(!e.getDestino().getVisited()){
                         e.getDestino().setVisited(true);
@@ -352,43 +340,10 @@ public class BNGraphLA<E> implements Serializable{
                 }
             }
         }
-//        List<E> l = new LinkedList<>();
-//        if(data==null){
-//            return l;
-//        }
-//        Vertex<E> v = searchVertex(data);
-//        if(v==null){
-//            return l;
-//        }
-//        Stack<Vertex<E>> q = new Stack<>();
-//        v.setVisited(true);
-//        q.push(v);
-//        while(!q.isEmpty()){
-//            v = q.pop();
-//            l.add(v.getData());
-//            for(Edge<E> e :v.getEdges()){
-//                if(!e.getDestino().getVisited()){
-//                    e.getDestino().setVisited(true);
-//                    q.push(e.getDestino());
-//                }
-//            }
-//        }
-//        cleanVertex();
-//        return l;
-        
-        
-        
     }
     
     public Stack<E> rutaActores(Vertex<E> vd){
         Stack<E> l = new Stack<>();
-//        if(destino==null){
-//            return l;
-//        }
-//        Vertex<E> vd = searchVertex(destino);
-//        if(vd==null){
-//            return l;
-//        }
         Vertex<E> v = vd;
         while(v!=null){
             l.add(v.getData());
@@ -399,13 +354,6 @@ public class BNGraphLA<E> implements Serializable{
     
     public Stack<String> rutaPeliculas(Vertex<E> vd){
         Stack<String> l = new Stack<>();
-//        if(destino==null){
-//            return l;
-//        }
-//        Vertex<E> vd = searchVertex(destino);
-//        if(vd==null){
-//            return l;
-//        }
         Vertex<E> v = vd;
         while(v.getAntecesor()!=null){
             Vertex<E> va = v.getAntecesor();

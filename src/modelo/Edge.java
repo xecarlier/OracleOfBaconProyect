@@ -5,13 +5,13 @@
  */
 package modelo;
 
-import java.io.Serializable;
+import java.util.Objects;
 
 /**
  *
  * @author xecar
  */
-public class Edge<E> implements Serializable{
+public class Edge<E>{
     private Vertex<E> origen;
     private Vertex<E> destino;
     private int peso;
@@ -69,5 +69,15 @@ public class Edge<E> implements Serializable{
         }
         Edge<E> edg = (Edge<E>) obj;
         return (this.getOrigen().equals(edg.getOrigen()) && this.getDestino().equals(edg.getDestino()));
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 89 * hash + Objects.hashCode(this.origen);
+        hash = 89 * hash + Objects.hashCode(this.destino);
+        hash = 89 * hash + this.peso;
+        hash = 89 * hash + Objects.hashCode(this.pelicula);
+        return hash;
     }
 }

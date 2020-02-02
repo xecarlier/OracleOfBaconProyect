@@ -6,9 +6,7 @@
 package view;
 
 import java.io.InputStream;
-import java.util.List;
 import java.util.Stack;
-import javafx.geometry.Pos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;

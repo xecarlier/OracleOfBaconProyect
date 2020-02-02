@@ -5,7 +5,6 @@
  */
 package modelo;
 
-import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -14,7 +13,7 @@ import java.util.Objects;
  *
  * @author xecar
  */
-public class Vertex<E> implements Serializable{
+public class Vertex<E>{
     private E data;
     private List<Edge<E>> edges;
     private boolean visited;
